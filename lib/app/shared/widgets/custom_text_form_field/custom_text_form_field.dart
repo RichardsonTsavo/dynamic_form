@@ -19,33 +19,34 @@ class CustomTextFormField extends StatelessWidget {
   final int maxLines;
   final bool obscureText;
   final TextInputAction? textInputAction;
+  final TextInputType? keyboardType;
   final int? maxLength;
   final void Function(String?)? onChanged;
   final Widget? prefixIcon;
   final Widget? sufixIcon;
-  const CustomTextFormField({
-    super.key,
-    required this.name,
-    this.cursorColor,
-    this.borderColor,
-    this.errorBorderColor,
-    this.hintText,
-    this.style,
-    this.labelText,
-    this.labelStyle,
-    this.errorStyle,
-    this.hintStyle,
-    this.validator,
-    this.inputFormatters,
-    this.initialValue,
-    this.maxLines = 1,
-    this.obscureText = false,
-    this.textInputAction,
-    this.maxLength,
-    this.onChanged,
-    this.sufixIcon,
-    this.prefixIcon,
-  });
+  const CustomTextFormField(
+      {super.key,
+      required this.name,
+      this.cursorColor,
+      this.borderColor,
+      this.errorBorderColor,
+      this.hintText,
+      this.style,
+      this.labelText,
+      this.labelStyle,
+      this.errorStyle,
+      this.hintStyle,
+      this.validator,
+      this.inputFormatters,
+      this.initialValue,
+      this.maxLines = 1,
+      this.obscureText = false,
+      this.textInputAction,
+      this.maxLength,
+      this.onChanged,
+      this.sufixIcon,
+      this.prefixIcon,
+      this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +61,10 @@ class CustomTextFormField extends StatelessWidget {
       inputFormatters: inputFormatters,
       initialValue: initialValue,
       maxLines: maxLines,
-      minLines: 1,
+      minLines: maxLines,
       obscureText: obscureText,
       textInputAction: textInputAction,
+      keyboardType: keyboardType,
       maxLength: maxLength,
       maxLengthEnforcement: MaxLengthEnforcement.none,
       onChanged: onChanged,

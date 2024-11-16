@@ -6,3 +6,5 @@ export 'custom_file_picker/custom_file_picker.dart';
 export 'custom_slider/custom_slider.dart';
 export 'custom_switch/custom_switch.dart';
 export 'custom_text_form_field/custom_text_form_field.dart';
+export 'error_widget_state/error_widget_state.dart';
+export 'loading_widget/loading_widget.dart';

@@ -9,6 +9,7 @@ class CustomSwitch extends StatelessWidget {
   final Color? errorBorderColor;
   final Color? activeColor;
   final bool? initialValue;
+  final String? Function(dynamic)? validator;
   const CustomSwitch({
     super.key,
     required this.name,
@@ -18,6 +19,7 @@ class CustomSwitch extends StatelessWidget {
     this.borderColor,
     this.errorBorderColor,
     this.activeColor,
+    this.validator,
   });
 
   @override
@@ -25,6 +27,7 @@ class CustomSwitch extends StatelessWidget {
     return FormBuilderSwitch(
       name: name,
       initialValue: initialValue,
+      validator: validator,
       title: Text(
         title,
         style: titleTextStyle ??

@@ -6,14 +6,12 @@ import 'package:intl/intl.dart';
 class CustomDateTimePicker extends StatelessWidget {
   final String name;
   final TextStyle? style;
-  final TimeOfDay? timeOfDay;
   final String? Function(DateTime?)? validator;
   final DateTime? initialValue;
   const CustomDateTimePicker({
     super.key,
     required this.name,
     this.style,
-    this.timeOfDay,
     this.validator,
     this.initialValue,
   });
@@ -28,10 +26,10 @@ class CustomDateTimePicker extends StatelessWidget {
           ),
       initialEntryMode: DatePickerEntryMode.calendar,
       initialDate: DateTime.now(),
-      initialTime: timeOfDay ?? TimeOfDay.now(),
-      initialValue: initialValue,
+      initialTime: TimeOfDay.now(),
+      initialValue: initialValue ?? DateTime.now(),
       validator: validator,
-      format: DateFormat('dd-MM-yyyy / mm:ss'),
+      format: DateFormat('dd-MM-yyyy \'às\' mm:ss'),
       inputType: InputType.both,
       decoration: const InputDecoration(
         prefixIcon: Icon(
