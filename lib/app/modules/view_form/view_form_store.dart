@@ -4,6 +4,7 @@ import 'package:mobx/mobx.dart';
 
 part 'view_form_store.g.dart';
 
+// ignore: library_private_types_in_public_api
 class ViewFormStore = _ViewFormStoreBase with _$ViewFormStore;
 
 abstract class _ViewFormStoreBase with Store {

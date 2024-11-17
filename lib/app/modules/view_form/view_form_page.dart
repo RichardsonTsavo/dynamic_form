@@ -29,11 +29,27 @@ class ViewFormPageState extends State<ViewFormPage> {
     return LayoutBuilder(builder: (context, constraints) {
       store.formWidgetBuilder ??= FormWidgetBuilder(
         constraints: constraints,
+        context: context,
       );
       return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           title: Text(widget.form.formName!),
+          leading: IconButton(
+            onPressed: () {
+              if (pageController.page == 0) {
+                Navigator.of(context).pop();
+              } else {
+                pageController.previousPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                );
+              }
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+            ),
+          ),
         ),
         body: FutureBuilder<FormModel>(
           future: store.getForm(widget.form),

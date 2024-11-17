@@ -33,23 +33,24 @@ class CustomDropdown extends StatelessWidget {
       hint: Text(
         title,
         style: titleTextStyle ??
-            const TextStyle(
-              color: Colors.white,
+            TextStyle(
+              color: Theme.of(context).primaryColor,
               fontSize: 15,
             ),
       ),
-      iconEnabledColor: Colors.white,
+      iconEnabledColor: Theme.of(context).primaryColor,
       items: items,
       style: style ??
           const TextStyle(
             color: Colors.black,
           ),
+      menuMaxHeight: MediaQuery.of(context).size.height / 2,
       selectedItemBuilder: (context) {
         return items.map((DropdownMenuItem item) {
           return Text(
             item.value,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
             ),
           );
         }).toList();
@@ -57,14 +58,14 @@ class CustomDropdown extends StatelessWidget {
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: borderColor ?? Colors.white,
+            color: borderColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
             width: 2,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: borderColor ?? Colors.white,
+            color: borderColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
             width: 2,
           ),
@@ -78,7 +79,7 @@ class CustomDropdown extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: borderColor ?? Colors.white,
+            color: borderColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
             width: 2,
           ),

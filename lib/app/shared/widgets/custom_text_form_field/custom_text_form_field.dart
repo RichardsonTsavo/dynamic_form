@@ -52,10 +52,10 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormBuilderTextField(
       name: name,
-      cursorColor: cursorColor ?? Colors.white,
+      cursorColor: cursorColor ?? Theme.of(context).primaryColor,
       style: style ??
-          const TextStyle(
-            color: Colors.white,
+          TextStyle(
+            color: Theme.of(context).primaryColor,
           ),
       validator: validator,
       inputFormatters: inputFormatters,
@@ -78,23 +78,23 @@ class CustomTextFormField extends StatelessWidget {
         hintText: hintText,
         labelText: labelText,
         labelStyle: labelStyle ??
-            const TextStyle(
-              color: Colors.white70,
+            TextStyle(
+              color: Theme.of(context).primaryColor.withAlpha(178),
             ),
         hintStyle: hintStyle ??
-            const TextStyle(
-              color: Colors.white70,
+            TextStyle(
+              color: Theme.of(context).primaryColor.withAlpha(178),
             ),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: borderColor ?? Colors.white,
+            color: borderColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
             width: 2,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: borderColor ?? Colors.white,
+            color: borderColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
             width: 2,
           ),
@@ -108,7 +108,7 @@ class CustomTextFormField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: borderColor ?? Colors.white,
+            color: borderColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
             width: 2,
           ),

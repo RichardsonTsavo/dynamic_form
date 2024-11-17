@@ -21,8 +21,8 @@ class CustomDateTimePicker extends StatelessWidget {
     return FormBuilderDateTimePicker(
       name: name,
       style: style ??
-          const TextStyle(
-            color: Colors.white,
+          TextStyle(
+            color: Theme.of(context).primaryColor,
           ),
       initialEntryMode: DatePickerEntryMode.calendar,
       initialDate: DateTime.now(),
@@ -31,21 +31,24 @@ class CustomDateTimePicker extends StatelessWidget {
       validator: validator,
       format: DateFormat('dd-MM-yyyy \'às\' mm:ss'),
       inputType: InputType.both,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         prefixIcon: Icon(
           Icons.date_range,
-          color: Colors.white,
+          color: Theme.of(context).primaryColor,
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.red, width: 2),
         ),
       ),

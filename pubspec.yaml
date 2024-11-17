@@ -19,6 +19,8 @@ dependencies:
   brasil_fields: ^1.15.0
   flutter_form_builder: ^9.5.0
   file_picker: ^8.1.4
+  shared_preferences: ^2.3.3
+  flutter_staggered_animations: ^1.1.1
 
 dev_dependencies:
   flutter_test:

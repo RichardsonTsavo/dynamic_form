@@ -7,7 +7,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class FormWidgetBuilder {
   final BoxConstraints constraints;
-  const FormWidgetBuilder({required this.constraints});
+  final BuildContext context;
+  const FormWidgetBuilder({required this.constraints, required this.context});
 
   List<Widget> buildForm({
     required GlobalKey<FormBuilderState> formKey,
@@ -17,7 +18,7 @@ class FormWidgetBuilder {
       Text(
         formSection.title!,
         style: TextStyle(
-          color: Colors.white,
+          color: Theme.of(context).primaryColor,
           fontSize: constraints.maxWidth * 0.06,
           fontWeight: FontWeight.bold,
         ),
@@ -25,8 +26,8 @@ class FormWidgetBuilder {
       if (formSection.description != null)
         Text(
           formSection.description!,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
           ),
         ),
     ];
@@ -458,7 +459,7 @@ class FormWidgetBuilder {
           Text(
             "${field.title!}:",
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.bold,
               fontSize: constraints.maxWidth * 0.04,
             ),
@@ -466,8 +467,8 @@ class FormWidgetBuilder {
           if (field.description != null)
             Text(
               field.description!,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
               ),
             ),
           Padding(

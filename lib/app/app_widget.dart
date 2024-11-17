@@ -20,17 +20,33 @@ class AppWidget extends StatelessWidget {
         Locale('pt', 'BR'),
       ],
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF363636),
-          // ignore: deprecated_member_use
-          background: const Color(0xFF000000),
-          primary: const Color(0xFF363636),
-        ),
+        primaryColor: Colors.white,
+        textTheme: Theme.of(context).textTheme.copyWith(
+              bodyMedium: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Colors.white),
+              bodyLarge: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(color: Colors.white),
+              headlineMedium: Theme.of(context)
+                  .textTheme
+                  .headlineMedium!
+                  .copyWith(color: Colors.white),
+              displaySmall: Theme.of(context)
+                  .textTheme
+                  .displaySmall!
+                  .copyWith(color: Colors.white),
+            ),
+        scaffoldBackgroundColor: const Color(0xFF363636),
         appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
           backgroundColor: Color(0xFF363636),
           titleTextStyle: TextStyle(
             fontSize: 15,
-            color: Color(0xFFEEEEEE),
           ),
           centerTitle: true,
         ),

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:dynamic_form/app/shared/utils/index.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -44,14 +45,15 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
             width: MediaQuery.of(context).size.width,
             height: 250,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white, width: 2),
+              border:
+                  Border.all(color: Theme.of(context).primaryColor, width: 2),
             ),
             child: field.value == null || field.value!.isEmpty
-                ? const Center(
+                ? Center(
                     child: Text(
                       "Selecione um arquivo",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 15,
                       ),
                     ),
@@ -84,8 +86,7 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: widget.allowMultiple,
       type: FileType.custom,
-      allowedExtensions:
-          widget.allowedExtensions ?? ['jpg', 'png', 'pdf', 'doc'],
+      allowedExtensions: widget.allowedExtensions ?? Utils.allowedExtensions(),
     );
     if (result != null) {
       List<FileDataModel> files = [];

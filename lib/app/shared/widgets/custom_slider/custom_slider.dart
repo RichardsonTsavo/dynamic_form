@@ -27,46 +27,49 @@ class CustomSlider extends StatelessWidget {
       max: max,
       initialValue: initialValue,
       divisions: divisions,
-      activeColor: Colors.white,
+      activeColor: Theme.of(context).primaryColor,
       inactiveColor: Colors.blueGrey,
       minValueWidget: (min) {
         return Text(
           min,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
           ),
         );
       },
       maxValueWidget: (max) {
         return Text(
           max,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
           ),
         );
       },
       valueWidget: (value) {
         return Text(
           value,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
           ),
         );
       },
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         prefixStyle: TextStyle(
-          color: Colors.white,
+          color: Theme.of(context).primaryColor,
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.red, width: 2),
         ),
       ),

@@ -26,30 +26,30 @@ class CustomSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormBuilderSwitch(
       name: name,
-      initialValue: initialValue,
+      initialValue: initialValue ?? false,
       validator: validator,
       title: Text(
         title,
         style: titleTextStyle ??
-            const TextStyle(
-              color: Colors.white,
+            TextStyle(
+              color: Theme.of(context).primaryColor,
               fontSize: 15,
             ),
       ),
-      activeColor: activeColor ?? Colors.white,
+      activeColor: activeColor ?? Theme.of(context).primaryColor,
       activeTrackColor: Colors.black,
       decoration: InputDecoration(
         isDense: true,
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: borderColor ?? Colors.white,
+            color: borderColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
             width: 2,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: borderColor ?? Colors.white,
+            color: borderColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
             width: 2,
           ),
@@ -63,7 +63,7 @@ class CustomSwitch extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: borderColor ?? Colors.white,
+            color: borderColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
             width: 2,
           ),

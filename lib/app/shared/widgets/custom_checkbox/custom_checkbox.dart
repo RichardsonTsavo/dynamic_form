@@ -26,29 +26,33 @@ class CustomCheckbox extends StatelessWidget {
       name: name,
       title: Text(
         title,
-        style: titleStyle ?? const TextStyle(color: Colors.white, fontSize: 15),
+        style: titleStyle ??
+            TextStyle(color: Theme.of(context).primaryColor, fontSize: 15),
       ),
-      activeColor: activeColor ?? Colors.white,
+      activeColor: activeColor ?? Theme.of(context).primaryColor,
       initialValue: initialValue,
-      side: const BorderSide(color: Colors.white),
+      side: BorderSide(color: Theme.of(context).primaryColor),
       validator: validator,
       visualDensity: VisualDensity.compact,
-      shape: const BeveledRectangleBorder(
+      shape: BeveledRectangleBorder(
         side: BorderSide(
-          color: Colors.white,
+          color: Theme.of(context).primaryColor,
         ),
       ),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.red, width: 2),
         ),
         isDense: true,

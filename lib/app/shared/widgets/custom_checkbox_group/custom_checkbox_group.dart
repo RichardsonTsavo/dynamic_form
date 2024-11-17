@@ -24,36 +24,39 @@ class CustomCheckboxGroup extends StatelessWidget {
       name: name,
       options: options,
       itemDecoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(15),
       ),
       activeColor: activeColor ?? Colors.black,
-      checkColor: checkColor ?? Colors.white,
+      checkColor: checkColor ?? Theme.of(context).primaryColor,
       validator: validator,
       initialValue: initialValue,
       wrapAlignment: WrapAlignment.spaceEvenly,
       wrapRunSpacing: 15,
       wrapSpacing: 5,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.red, width: 2),
         ),
         isDense: true,
         isCollapsed: false,
       ),
-      separator: const VerticalDivider(
+      separator: VerticalDivider(
         width: 10,
         thickness: 5,
-        color: Colors.white,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }

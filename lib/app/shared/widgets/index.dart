@@ -1,3 +1,4 @@
+export 'animated_list/animated_list_widget.dart';
 export 'custom_checkbox/custom_checkbox.dart';
 export 'custom_checkbox_group/custom_checkbox_group.dart';
 export 'custom_date_time_picker/custom_date_time_picker.dart';
