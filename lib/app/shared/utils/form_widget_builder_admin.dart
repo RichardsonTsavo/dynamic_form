@@ -1,4 +1,4 @@
-import 'package:dynamic_form/app/shared/models/index.dart';
+import 'package:dynamic_form/app/shared/models/dynamic_form/index.dart';
 import 'package:dynamic_form/app/shared/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -23,6 +23,7 @@ class FormWidgetBuilderAdmin {
       ),
       CustomTextFormField(
         name: '${formSection.id}title',
+        initialValue: formSection.title,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Campo obrigatório';
@@ -44,6 +45,7 @@ class FormWidgetBuilderAdmin {
       ),
       CustomTextFormField(
         name: '${formSection.id}description',
+        initialValue: formSection.description,
         borderColor: Theme.of(context).scaffoldBackgroundColor,
         labelText: 'Descrição da sessão',
         cursorColor: Theme.of(context).scaffoldBackgroundColor,
@@ -64,7 +66,7 @@ class FormWidgetBuilderAdmin {
         case 'TEXT':
           widgets.add(
             buildField(
-              sectionID: formSection.id!,
+              formSection: formSection,
               index: x,
               titleType: "Tipo: Texto Simples",
               field: element,
@@ -75,7 +77,7 @@ class FormWidgetBuilderAdmin {
         case 'LONGTEXT':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Texto Longo",
                 field: element,
@@ -85,7 +87,7 @@ class FormWidgetBuilderAdmin {
         case 'CPF':
           widgets.add(
             buildField(
-              sectionID: formSection.id!,
+              formSection: formSection,
               index: x,
               titleType: "Tipo: CPF",
               field: element,
@@ -96,7 +98,7 @@ class FormWidgetBuilderAdmin {
         case 'CNPJ':
           widgets.add(
             buildField(
-              sectionID: formSection.id!,
+              formSection: formSection,
               index: x,
               titleType: "Tipo: CNPJ",
               field: element,
@@ -107,7 +109,7 @@ class FormWidgetBuilderAdmin {
         case 'CEP':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Cep",
                 field: element,
@@ -117,7 +119,7 @@ class FormWidgetBuilderAdmin {
         case 'PHONE':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Telefone",
                 field: element,
@@ -127,7 +129,7 @@ class FormWidgetBuilderAdmin {
         case 'CURRENCY':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Moeda",
                 field: element,
@@ -137,7 +139,7 @@ class FormWidgetBuilderAdmin {
         case 'CARPLATE':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Placa de carro",
                 field: element,
@@ -147,7 +149,7 @@ class FormWidgetBuilderAdmin {
         case 'BANKCARD':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Cartão de Banco",
                 field: element,
@@ -157,7 +159,7 @@ class FormWidgetBuilderAdmin {
         case 'CHECKBOX':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: CheckBox",
                 field: element,
@@ -167,12 +169,13 @@ class FormWidgetBuilderAdmin {
         case 'DROPDOWN':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: DropDown",
                 field: element,
                 widgets: [
                   AddOptionsWidget(
+                    initialvalue: element.fieldOptions,
                     fieldId: '${formSection.id!}/$x/options',
                     firstRequired: true,
                   )
@@ -182,7 +185,7 @@ class FormWidgetBuilderAdmin {
         case 'SWITCH':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Switch",
                 field: element,
@@ -192,7 +195,7 @@ class FormWidgetBuilderAdmin {
         case 'CHECKBOXGROUP':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Grupo de Checkbox",
                 field: element,
@@ -201,6 +204,7 @@ class FormWidgetBuilderAdmin {
                     height: 8,
                   ),
                   AddOptionsWidget(
+                    initialvalue: element.fieldOptions,
                     fieldId: "${formSection.id!}/$x/options",
                     firstRequired: true,
                   ),
@@ -268,7 +272,7 @@ class FormWidgetBuilderAdmin {
         case 'SLIDER':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Slider",
                 field: element,
@@ -337,7 +341,7 @@ class FormWidgetBuilderAdmin {
         case 'DATE':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Data",
                 field: element,
@@ -347,12 +351,13 @@ class FormWidgetBuilderAdmin {
         case 'FILE':
           widgets.add(
             buildField(
-                sectionID: formSection.id!,
+                formSection: formSection,
                 index: x,
                 titleType: "Tipo: Arquivos",
                 field: element,
                 widgets: [
                   AddOptionsWidget(
+                    initialvalue: element.fileTypes,
                     fieldId: '${formSection.id!}/$x/fileTypes',
                     firstRequired: false,
                     titleButton: "Adicionar um formato especifico",
@@ -367,7 +372,7 @@ class FormWidgetBuilderAdmin {
   }
 
   Widget buildField({
-    required String sectionID,
+    required FormSectionModel formSection,
     required FormFieldModel field,
     required List<Widget> widgets,
     required String titleType,
@@ -405,7 +410,7 @@ class FormWidgetBuilderAdmin {
                             Navigator.of(context).pop();
                             CreateFormStore store = Modular.get();
                             store.deleteFieldInSection(
-                              sectionId: sectionID,
+                              sectionId: formSection.id!,
                               index: index,
                             );
                           },
@@ -446,7 +451,8 @@ class FormWidgetBuilderAdmin {
             height: 8,
           ),
           CustomTextFormField(
-            name: '$sectionID/$index/title',
+            name: '${formSection.id}/$index/title',
+            initialValue: field.title,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Campo obrigatório';
@@ -467,7 +473,8 @@ class FormWidgetBuilderAdmin {
             height: 8,
           ),
           CustomTextFormField(
-            name: '$sectionID/$index/description',
+            name: '${formSection.id}/$index/description',
+            initialValue: field.description,
             borderColor: Theme.of(context).scaffoldBackgroundColor,
             labelText: 'Descrição do campo',
             cursorColor: Theme.of(context).scaffoldBackgroundColor,
@@ -482,8 +489,9 @@ class FormWidgetBuilderAdmin {
             height: 8,
           ),
           CustomSwitch(
-            name: '$sectionID/$index/isRequired',
+            name: '${formSection.id}/$index/isRequired',
             title: "Campo será obrigatório?",
+            initialValue: field.isRequired,
             borderColor: Theme.of(context).scaffoldBackgroundColor,
             titleTextStyle: TextStyle(
               color: Theme.of(context).scaffoldBackgroundColor,
@@ -494,8 +502,8 @@ class FormWidgetBuilderAdmin {
             height: 8,
           ),
           CustomTextFormField(
-            name: "$sectionID/$index/label",
-            initialValue: field.value,
+            name: "${formSection.id}/$index/label",
+            initialValue: field.label,
             labelText: "Digite uma label",
             borderColor: Theme.of(context).scaffoldBackgroundColor,
             cursorColor: Theme.of(context).scaffoldBackgroundColor,

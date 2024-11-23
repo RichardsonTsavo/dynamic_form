@@ -1,4 +1,4 @@
-import 'package:dynamic_form/app/shared/models/index.dart';
+import 'package:dynamic_form/app/shared/models/dynamic_form/index.dart';
 import 'package:dynamic_form/app/shared/utils/index.dart';
 import 'package:mobx/mobx.dart';
 
@@ -14,7 +14,7 @@ abstract class _ViewFormStoreBase with Store {
   bool isLoading = false;
 
   Future<FormModel> getForm(FormModel form) async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(milliseconds: 500));
     return form;
   }
 

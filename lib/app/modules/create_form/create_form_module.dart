@@ -12,7 +12,9 @@ class CreateFormModule extends Module {
   void routes(r) {
     r.child(
       '/',
-      child: (context) => const CreateFormPage(),
+      child: (context) => CreateFormPage(
+        formModel: r.args.data,
+      ),
     );
   }
 }

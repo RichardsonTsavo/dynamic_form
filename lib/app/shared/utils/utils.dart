@@ -113,7 +113,12 @@ class Utils {
       ],
     );
     ScaffoldMessenger.of(context).showMaterialBanner(materialBanner);
-    Future.delayed(const Duration(seconds: 5)).then(
-        (value) => ScaffoldMessenger.of(context).hideCurrentMaterialBanner());
+    Future.delayed(const Duration(seconds: 5)).then((value) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+        },
+      );
+    });
   }
 }

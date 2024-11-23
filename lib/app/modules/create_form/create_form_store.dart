@@ -4,7 +4,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../shared/api/dynamic_form_api.dart';
-import '../../shared/models/index.dart';
+import '../../shared/models/dynamic_form/index.dart';
+import '../../shared/persistent/persistent_data.dart';
 import '../../shared/utils/index.dart';
 
 part 'create_form_store.g.dart';
@@ -14,6 +15,7 @@ class CreateFormStore = _CreateFormStoreBase with _$CreateFormStore;
 
 abstract class _CreateFormStoreBase with Store {
   FormWidgetBuilderAdmin? formWidgetBuilderAdmin;
+  PersistentData persistentData = Modular.get();
   DynamicFormApi api = DynamicFormApi();
   GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
   ObservableList<FormSectionModel> sections = ObservableList();
@@ -70,6 +72,7 @@ abstract class _CreateFormStoreBase with Store {
   Future saveForm({
     required Map<String, dynamic> form,
     required BuildContext context,
+    FormModel? formModel,
   }) async {
     if (isLoading == true) {
       return;
@@ -78,7 +81,6 @@ abstract class _CreateFormStoreBase with Store {
 
     for (var i = 0; i < sections.length; i++) {
       final sectionId = sections[i].id;
-      final sectionPrefix = '$sectionId/$i';
 
       sections[i] = sections[i].copyWith(
         title: form['${sections[i].id}title'],
@@ -100,38 +102,77 @@ abstract class _CreateFormStoreBase with Store {
             );
       }
     }
+    if (formModel == null) {
+      FormModel model = FormModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        createdBy: persistentData.userID,
+        formName: form['title'],
+        isEditable: form['isEditable'],
+        maxResponseCount: int.parse(
+          form['maxResponseCount'].toString(),
+        ),
+        sections: sections,
+      );
 
-    FormModel formModel = FormModel(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      formName: form['title'],
-      isEditable: form['isEditable'],
-      maxResponseCount: int.parse(
-        form['maxResponseCount'].toString(),
-      ),
-      sections: sections,
-    );
+      await api.createNewForm(form: model);
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          Utils.showPopupDialog(
+            context: context,
+            child: AlertDialog(
+              actionsAlignment: MainAxisAlignment.spaceEvenly,
+              title: const Text(
+                "Formulário criado com sucesso!",
+                textAlign: TextAlign.center,
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Modular.to.navigate('/home/');
+                  },
+                  child: const Text("Fechar"),
+                )
+              ],
+            ),
+          );
+        },
+      );
+    } else {
+      await api.updateForms(formModel.copyWith(
+        formName: form['title'],
+        isEditable: form['isEditable'],
+        maxResponseCount: int.parse(
+          form['maxResponseCount'].toString(),
+        ),
+        sections: sections,
+      ));
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          Utils.showPopupDialog(
+            context: context,
+            child: AlertDialog(
+              actionsAlignment: MainAxisAlignment.spaceEvenly,
+              title: const Text(
+                "Formulário editado com sucesso!",
+                textAlign: TextAlign.center,
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Modular.to.navigate('/home/');
+                  },
+                  child: const Text("Fechar"),
+                )
+              ],
+            ),
+          );
+        },
+      );
+    }
 
-    await api.createNewForm(form: formModel);
     isLoading = false;
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        Utils.showPopupDialog(
-          context: context,
-          child: AlertDialog(
-            title: const Text("Formulário criado com sucesso!"),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Modular.to.navigate('/');
-                },
-                child: const Text("Fechar"),
-              )
-            ],
-          ),
-        );
-      },
-    );
   }
 
   double? _parseDouble(dynamic value) {

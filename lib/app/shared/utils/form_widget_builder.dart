@@ -1,5 +1,5 @@
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:dynamic_form/app/shared/models/index.dart';
+import 'package:dynamic_form/app/shared/models/dynamic_form/index.dart';
 import 'package:dynamic_form/app/shared/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

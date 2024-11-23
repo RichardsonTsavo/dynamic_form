@@ -10,6 +10,7 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Dynamic Form',
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         GlobalCupertinoLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,

@@ -1,5 +1,5 @@
 import 'package:dynamic_form/app/modules/view_form/view_form_store.dart';
-import 'package:dynamic_form/app/shared/models/index.dart';
+import 'package:dynamic_form/app/shared/models/dynamic_form/index.dart';
 import 'package:dynamic_form/app/shared/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -32,13 +32,12 @@ class ViewFormPageState extends State<ViewFormPage> {
         context: context,
       );
       return Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           title: Text(widget.form.formName!),
           leading: IconButton(
             onPressed: () {
               if (pageController.page == 0) {
-                Modular.to.navigate('/');
+                Modular.to.navigate('/home/');
               } else {
                 pageController.previousPage(
                   duration: const Duration(milliseconds: 300),

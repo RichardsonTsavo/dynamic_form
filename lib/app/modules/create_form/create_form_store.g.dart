@@ -30,9 +30,11 @@ mixin _$CreateFormStore on _CreateFormStoreBase, Store {
 
   @override
   Future<dynamic> saveForm(
-      {required Map<String, dynamic> form, required BuildContext context}) {
-    return _$saveFormAsyncAction
-        .run(() => super.saveForm(form: form, context: context));
+      {required Map<String, dynamic> form,
+      required BuildContext context,
+      FormModel? formModel}) {
+    return _$saveFormAsyncAction.run(() =>
+        super.saveForm(form: form, context: context, formModel: formModel));
   }
 
   late final _$_CreateFormStoreBaseActionController =

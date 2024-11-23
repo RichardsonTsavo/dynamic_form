@@ -7,15 +7,29 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../shared/models/dynamic_form/index.dart';
+
+// ignore: must_be_immutable
 class CreateFormPage extends StatefulWidget {
-  final String title;
-  const CreateFormPage({super.key, this.title = 'Criar novo formulário'});
+  String title;
+  final FormModel? formModel;
+  CreateFormPage(
+      {super.key, this.title = ('Criar novo formulário'), this.formModel});
   @override
   CreateFormPageState createState() => CreateFormPageState();
 }
 
 class CreateFormPageState extends State<CreateFormPage> {
   final CreateFormStore store = Modular.get();
+
+  @override
+  void initState() {
+    if (widget.formModel != null) {
+      widget.title = 'Editar formulário';
+      store.sections.addAll(widget.formModel!.sections!);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +47,7 @@ class CreateFormPageState extends State<CreateFormPage> {
           title: Text(widget.title),
           leading: IconButton(
             onPressed: () {
-              Modular.to.navigate('/');
+              Modular.to.navigate('/home/');
             },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
@@ -48,6 +62,7 @@ class CreateFormPageState extends State<CreateFormPage> {
                   children: <Widget>[
                     CustomTextFormField(
                       name: "title",
+                      initialValue: widget.formModel?.formName,
                       labelText: "Titulo do formulário",
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -59,8 +74,9 @@ class CreateFormPageState extends State<CreateFormPage> {
                     const SizedBox(
                       height: 15,
                     ),
-                    const CustomSwitch(
+                    CustomSwitch(
                       name: 'isEditable',
+                      initialValue: widget.formModel?.isEditable,
                       title: "Formulário editavel depois de enviado?",
                     ),
                     const SizedBox(
@@ -68,6 +84,8 @@ class CreateFormPageState extends State<CreateFormPage> {
                     ),
                     CustomDropdown(
                       name: "maxResponseCount",
+                      initialValue:
+                          widget.formModel?.maxResponseCount.toString(),
                       title: "Quantas vezes o usuário pode responder?",
                       items: List.generate(
                         100,
@@ -367,6 +385,7 @@ class CreateFormPageState extends State<CreateFormPage> {
                                 store.saveForm(
                                   form: store.formKey.currentState!.value,
                                   context: context,
+                                  formModel: widget.formModel,
                                 );
                               }
                             },

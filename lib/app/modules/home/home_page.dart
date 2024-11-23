@@ -2,7 +2,8 @@ import 'package:dynamic_form/app/shared/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../shared/models/index.dart';
+import '../../shared/models/dynamic_form/index.dart';
+import '../../shared/utils/utils.dart';
 import 'home_store.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,6 +31,23 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: const Text('Formulário Dinâmico'),
           elevation: 5,
+          actions: [
+            PopupMenuButton<int>(
+              onSelected: (value) {
+                switch (value) {
+                  case 1:
+                    store.persistentData.logout();
+                    break;
+                }
+              },
+              itemBuilder: (BuildContext context) => [
+                const PopupMenuItem(
+                  value: 1,
+                  child: Text('Logout'),
+                ),
+              ],
+            ),
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -63,63 +81,122 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         InkWell(
                           onTap: () {
-                            Modular.to.navigate(
-                              '/view-form/',
-                              arguments: snapshot.data![index],
-                            );
+                            if (store.persistentData.isAdmin) {
+                            } else {
+                              Modular.to.navigate(
+                                '/view-form/',
+                                arguments: snapshot.data![index],
+                              );
+                            }
                           },
                           child: Card(
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.list_alt_rounded,
-                                  size: constraints.maxWidth * 0.25,
-                                ),
-                                Text(
-                                  snapshot.data![index].formName!,
-                                  maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: constraints.maxWidth * 0.06,
+                            child: SizedBox(
+                              width: constraints.maxWidth,
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.list_alt_rounded,
+                                    size: constraints.maxWidth * 0.25,
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 10,
-                          left: 10,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.red,
-                            child: IconButton(
-                              onPressed: () async {
-                                await store.deleteForms(index);
-                                setState(() {});
-                              },
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.white,
+                                  Text(
+                                    snapshot.data![index].formName!,
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: constraints.maxWidth * 0.06,
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                           ),
                         ),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
+                        if (store.persistentData.isAdmin) ...[
+                          Positioned(
+                            top: 10,
+                            left: 10,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.red,
+                              child: IconButton(
+                                onPressed: () {
+                                  Utils.showPopupDialog(
+                                    context: context,
+                                    child: AlertDialog(
+                                      actionsAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      title: const Text(
+                                        "Deseja deletar o Formulário?",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.red,
+                                          ),
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                            await store.deleteForms(
+                                              snapshot.data![index].id!,
+                                            );
+                                            setState(() {});
+                                          },
+                                          child: Text(
+                                            "Deletar",
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text(
+                                            "Fechar",
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
-                        )
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black,
+                              child: IconButton(
+                                onPressed: () {
+                                  Modular.to.navigate(
+                                    '/create-form/',
+                                    arguments: snapshot.data![index],
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          )
+                        ]
                       ],
                     ),
                   ),
@@ -128,12 +205,14 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Modular.to.navigate('/create-form/');
-          },
-          child: const Icon(Icons.add),
-        ),
+        floatingActionButton: store.persistentData.isAdmin
+            ? FloatingActionButton(
+                onPressed: () {
+                  Modular.to.navigate('/create-form/');
+                },
+                child: const Icon(Icons.add),
+              )
+            : null,
       );
     });
   }
