@@ -33,7 +33,7 @@ class FormModel {
       formName: map['formName'] != null ? map['formName'] as String : null,
       sections: map['sections'] != null
           ? List<FormSectionModel>.from(
-              (map['sections'] as List<int>).map<FormSectionModel?>(
+              (map['sections'] as List<dynamic>).map<FormSectionModel?>(
                 (x) => FormSectionModel.fromMap(x as Map<String, dynamic>),
               ),
             )

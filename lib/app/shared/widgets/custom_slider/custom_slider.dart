@@ -7,6 +7,7 @@ class CustomSlider extends StatelessWidget {
   final double min;
   final double max;
   final double initialValue;
+  final String? label;
   final int? divisions;
   const CustomSlider({
     super.key,
@@ -16,6 +17,7 @@ class CustomSlider extends StatelessWidget {
     required this.max,
     required this.initialValue,
     this.divisions,
+    this.label,
   });
 
   @override
@@ -23,6 +25,7 @@ class CustomSlider extends StatelessWidget {
     return FormBuilderSlider(
       name: name,
       validator: validator,
+      label: label != null && validator != null ? "$label *" : label,
       min: min,
       max: max,
       initialValue: initialValue,

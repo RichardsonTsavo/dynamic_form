@@ -3,6 +3,7 @@ import 'package:dynamic_form/app/shared/utils/index.dart';
 import 'package:dynamic_form/app/shared/widgets/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -19,6 +20,10 @@ class CreateFormPageState extends State<CreateFormPage> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
+      store.formWidgetBuilderAdmin ??= FormWidgetBuilderAdmin(
+        constraints: constraints,
+        context: context,
+      );
       return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
@@ -28,711 +33,396 @@ class CreateFormPageState extends State<CreateFormPage> {
           title: Text(widget.title),
           leading: IconButton(
             onPressed: () {
-              Modular.to.pop();
+              Modular.to.navigate('/');
             },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Observer(builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: <Widget>[
-                  CustomTextFormField(
-                    name: "title",
-                    labelText: "Titulo do formulário",
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "O titulo é obrigatório";
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const CustomSwitch(
-                    name: 'isEditable',
-                    title: "Formulário editavel depois de enviado?",
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  CustomDropdown(
-                    name: "maxResponseCount",
-                    title: "Quantas vezes o usuário pode responder?",
-                    items: List.generate(
-                      100,
-                      (index) => DropdownMenuItem(
-                        value: (index + 1).toString(),
-                        child: Text("${index + 1}"),
-                      ),
+        body: FormBuilder(
+          key: store.formKey,
+          child: SingleChildScrollView(
+            child: Observer(builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    CustomTextFormField(
+                      name: "title",
+                      labelText: "Titulo do formulário",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "O titulo é obrigatório";
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "O titulo é obrigatório";
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  for (int i = 0; i < store.sections.length; i++)
-                    Card(
-                      child: Container(
-                        width: constraints.maxHeight,
-                        constraints: BoxConstraints(
-                          minHeight: constraints.maxHeight * 0.2,
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const CustomSwitch(
+                      name: 'isEditable',
+                      title: "Formulário editavel depois de enviado?",
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomDropdown(
+                      name: "maxResponseCount",
+                      title: "Quantas vezes o usuário pode responder?",
+                      items: List.generate(
+                        100,
+                        (index) => DropdownMenuItem(
+                          value: (index + 1).toString(),
+                          child: Text("${index + 1}"),
                         ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "O titulo é obrigatório";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    for (int i = 0; i < store.sections.length; i++)
+                      Card(
+                        child: Container(
+                          width: constraints.maxHeight,
+                          constraints: BoxConstraints(
+                            minHeight: constraints.maxHeight * 0.2,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
                               children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    Utils.showPopupDialog(
-                                      context: context,
-                                      child: AlertDialog(
-                                        actionsAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        title: const Text(
-                                          "Deseja deletar sessão?",
-                                        ),
-                                        actions: [
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.red,
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              store.deleteSection(index: i);
-                                            },
-                                            child: Text(
-                                              "Deletar",
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text(
-                                              "Fechar",
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red,
                                       ),
-                                    );
-                                  },
-                                  child: Text(
-                                    "Remover Sessão",
-                                    style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Theme.of(context)
-                                        .scaffoldBackgroundColor,
-                                  ),
-                                  onPressed: () {
-                                    Utils.showPopupDialog(
-                                      context: context,
-                                      child: AlertDialog(
-                                        scrollable: true,
-                                        actionsAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        title: const Text(
-                                          "Qual tipo de campo você quer adicionar?",
-                                          textAlign: TextAlign.center,
+                                      onPressed: () {
+                                        Utils.showPopupDialog(
+                                          context: context,
+                                          child: AlertDialog(
+                                            actionsAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            title: const Text(
+                                              "Deseja deletar sessão?",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            actions: [
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.red,
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  store.deleteSection(index: i);
+                                                },
+                                                child: Text(
+                                                  "Deletar",
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Theme.of(
+                                                          context)
+                                                      .scaffoldBackgroundColor,
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text(
+                                                  "Fechar",
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Remover Sessão",
+                                        style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
                                         ),
-                                        content: Wrap(
-                                          alignment: WrapAlignment.spaceEvenly,
-                                          spacing: 15,
-                                          runSpacing: 15,
-                                          children: [
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                      ),
+                                      onPressed: () {
+                                        Utils.showPopupDialog(
+                                          context: context,
+                                          child: AlertDialog(
+                                            scrollable: true,
+                                            actionsAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            title: const Text(
+                                              "Qual tipo de campo você quer adicionar?",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            content: Wrap(
+                                              alignment:
+                                                  WrapAlignment.spaceEvenly,
+                                              spacing: 15,
+                                              runSpacing: 15,
+                                              children: [
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Texto simples",
+                                                  icon:
                                                       Icons.text_fields_rounded,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "Texto simples",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                  fieldID: 'TEXT',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Texto Longo",
+                                                  icon:
                                                       Icons.text_fields_rounded,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "Texto Longo",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                  fieldID: 'LONGTEXT',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "CPF",
+                                                  icon:
                                                       Icons.text_fields_rounded,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "CPF",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                  fieldID: 'CPF',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "CNPJ",
+                                                  icon:
                                                       Icons.text_fields_rounded,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "CNPJ",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                  fieldID: 'CNPJ',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "CEP",
+                                                  icon:
                                                       Icons.text_fields_rounded,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "CEP",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                  fieldID: 'CEP',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.phone,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "TELEFONE",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Telefone",
+                                                  icon: Icons.phone,
+                                                  fieldID: 'PHONE',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
-                                                      Icons
-                                                          .monetization_on_outlined,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "Moeda",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Moeda",
+                                                  icon: Icons
+                                                      .monetization_on_outlined,
+                                                  fieldID: 'CURRENCY',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
-                                                      CupertinoIcons
-                                                          .car_detailed,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "Placa de Carro",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Placa de Carro",
+                                                  icon: CupertinoIcons
+                                                      .car_detailed,
+                                                  fieldID: 'CARPLATE',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.credit_card,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "Cartão de Banco",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Cartão de Banco",
+                                                  icon: Icons.credit_card,
+                                                  fieldID: 'BANKCARD',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "CheckBox",
+                                                  icon:
                                                       Icons.check_box_outlined,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "CheckBox",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                  fieldID: 'CHECKBOX',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.list,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "DropDown",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "DropDown",
+                                                  icon: Icons.list,
+                                                  fieldID: 'DROPDOWN',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
-                                                      CupertinoIcons
-                                                          .arrow_right_arrow_left_square,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "Switch",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Switch",
+                                                  icon: CupertinoIcons
+                                                      .arrow_right_arrow_left_square,
+                                                  fieldID: 'SWITCH',
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Grupo de CheckBox",
+                                                  icon:
                                                       Icons.group_work_outlined,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "Grupo de checkBox",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
+                                                  fieldID: 'CHECKBOXGROUP',
+                                                ),
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Slider",
+                                                  icon: CupertinoIcons
+                                                      .slider_horizontal_3,
+                                                  fieldID: 'SLIDER',
+                                                ),
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Data",
+                                                  icon: Icons.date_range,
+                                                  fieldID: 'DATE',
+                                                ),
+                                                fieldSelectWidget(
+                                                  index: i,
+                                                  constraints: constraints,
+                                                  title: "Arquivo",
+                                                  icon: Icons.file_present,
+                                                  fieldID: 'FILE',
+                                                ),
+                                              ],
+                                            ),
+                                            actions: [
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Theme.of(
+                                                          context)
+                                                      .scaffoldBackgroundColor,
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text(
+                                                  "Fechar",
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
-                                                      CupertinoIcons
-                                                          .slider_horizontal_3,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "Slider",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.date_range,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "Data",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width:
-                                                  constraints.maxWidth * 0.25,
-                                              height:
-                                                  constraints.maxHeight * 0.1,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.file_present,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                      "Arquivo",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        actions: [
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text(
-                                              "Fechar",
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                              ),
-                                            ),
+                                            ],
                                           ),
-                                        ],
+                                        );
+                                      },
+                                      child: Text(
+                                        "Adicionar Campo",
+                                        style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  child: Text(
-                                    "Adicionar Campo",
-                                    style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
                                     ),
-                                  ),
+                                  ],
                                 ),
+                                ...store.formWidgetBuilderAdmin!.buildForm(
+                                  formKey: store.formKey,
+                                  formSection: store.sections[i],
+                                )
                               ],
-                            )
-                          ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            store.addSection();
-                          },
-                          child: const Text(
-                            "Adicionar Sessão",
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              store.addSection();
+                            },
+                            child: const Text(
+                              "Adicionar Sessão",
+                            ),
                           ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Salvar",
+                          ElevatedButton(
+                            onPressed: () {
+                              if (store.formKey.currentState!
+                                  .saveAndValidate()) {
+                                store.saveForm(
+                                  form: store.formKey.currentState!.value,
+                                  context: context,
+                                );
+                              }
+                            },
+                            child: const Text(
+                              "Salvar",
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  )
-                ],
-              ),
-            );
-          }),
+                  ],
+                ),
+              );
+            }),
+          ),
         ),
       );
     });
+  }
+
+  Widget fieldSelectWidget({
+    required int index,
+    required BoxConstraints constraints,
+    required IconData icon,
+    required String title,
+    required String fieldID,
+  }) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pop();
+        store.addFieldInSection(fieldType: fieldID, index: index);
+      },
+      child: Container(
+        width: constraints.maxWidth * 0.25,
+        height: constraints.maxHeight * 0.1,
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(
+                icon,
+                color: Colors.white,
+              ),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

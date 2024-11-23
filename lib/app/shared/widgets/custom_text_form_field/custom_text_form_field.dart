@@ -75,8 +75,11 @@ class CustomTextFormField extends StatelessWidget {
             const TextStyle(
               color: Colors.red,
             ),
-        hintText: hintText,
-        labelText: labelText,
+        hintText:
+            hintText != null && validator != null ? '${hintText!} *' : hintText,
+        labelText: labelText != null && validator != null
+            ? '${labelText!} *'
+            : labelText,
         labelStyle: labelStyle ??
             TextStyle(
               color: Theme.of(context).primaryColor.withAlpha(178),

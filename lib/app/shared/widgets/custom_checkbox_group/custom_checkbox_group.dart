@@ -8,6 +8,7 @@ class CustomCheckboxGroup extends StatelessWidget {
   final Color? checkColor;
   final List<String>? initialValue;
   final String? Function(List<String>?)? validator;
+  final String? label;
   const CustomCheckboxGroup({
     super.key,
     required this.name,
@@ -16,6 +17,7 @@ class CustomCheckboxGroup extends StatelessWidget {
     this.checkColor,
     this.initialValue,
     this.validator,
+    this.label,
   });
 
   @override
@@ -35,6 +37,9 @@ class CustomCheckboxGroup extends StatelessWidget {
       wrapRunSpacing: 15,
       wrapSpacing: 5,
       decoration: InputDecoration(
+        label: label != null
+            ? Text("$label ${validator != null ? ' *' : ''}")
+            : null,
         enabledBorder: OutlineInputBorder(
           borderSide:
               BorderSide(color: Theme.of(context).primaryColor, width: 2),

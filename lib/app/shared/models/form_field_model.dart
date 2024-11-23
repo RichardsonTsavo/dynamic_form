@@ -53,10 +53,10 @@ class FormFieldModel {
       fieldType: map['fieldType'] != null ? map['fieldType'] as String : null,
       isRequired: map['isRequired'] != null ? map['isRequired'] as bool : null,
       fileTypes: map['fileTypes'] != null
-          ? List<String>.from((map['fileTypes'] as List<String>))
+          ? List<String>.from((map['fileTypes'] as List<dynamic>))
           : null,
       fieldOptions: map['fieldOptions'] != null
-          ? List<String>.from((map['fieldOptions'] as List<String>))
+          ? List<String>.from((map['fieldOptions'] as List<dynamic>))
           : null,
       min: map['min'] != null ? map['min'] as double : null,
       max: map['max'] != null ? map['max'] as double : null,

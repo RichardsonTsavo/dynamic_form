@@ -51,7 +51,7 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
             child: field.value == null || field.value!.isEmpty
                 ? Center(
                     child: Text(
-                      "Selecione um arquivo",
+                      "Selecione um arquivo '${widget.validator != null ? ' *' : ''}",
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 15,

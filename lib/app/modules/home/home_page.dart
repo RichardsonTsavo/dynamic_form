@@ -62,8 +62,20 @@ class _HomePageState extends State<HomePage> {
                     widget: Card(
                       child: Column(
                         children: [
-                          const Icon(Icons.list_alt_rounded),
-                          Text(snapshot.data![index].formName!)
+                          Icon(
+                            Icons.list_alt_rounded,
+                            size: constraints.maxWidth * 0.25,
+                          ),
+                          Text(
+                            snapshot.data![index].formName!,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: constraints.maxWidth * 0.06,
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -75,7 +87,7 @@ class _HomePageState extends State<HomePage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Modular.to.pushNamed('/create-form');
+            Modular.to.navigate('/create-form/');
           },
           child: const Icon(Icons.add),
         ),

@@ -8,12 +8,14 @@ class CustomDateTimePicker extends StatelessWidget {
   final TextStyle? style;
   final String? Function(DateTime?)? validator;
   final DateTime? initialValue;
+  final String? label;
   const CustomDateTimePicker({
     super.key,
     required this.name,
     this.style,
     this.validator,
     this.initialValue,
+    this.label,
   });
 
   @override
@@ -32,6 +34,9 @@ class CustomDateTimePicker extends StatelessWidget {
       format: DateFormat('dd-MM-yyyy \'às\' mm:ss'),
       inputType: InputType.both,
       decoration: InputDecoration(
+        label: label != null
+            ? Text("$label ${validator != null ? ' *' : ''}")
+            : null,
         prefixIcon: Icon(
           Icons.date_range,
           color: Theme.of(context).primaryColor,

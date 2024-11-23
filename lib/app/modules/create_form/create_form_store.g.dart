@@ -9,6 +9,32 @@ part of 'create_form_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$CreateFormStore on _CreateFormStoreBase, Store {
+  late final _$isLoadingAtom =
+      Atom(name: '_CreateFormStoreBase.isLoading', context: context);
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
+    });
+  }
+
+  late final _$saveFormAsyncAction =
+      AsyncAction('_CreateFormStoreBase.saveForm', context: context);
+
+  @override
+  Future<dynamic> saveForm(
+      {required Map<String, dynamic> form, required BuildContext context}) {
+    return _$saveFormAsyncAction
+        .run(() => super.saveForm(form: form, context: context));
+  }
+
   late final _$_CreateFormStoreBaseActionController =
       ActionController(name: '_CreateFormStoreBase', context: context);
 
@@ -35,6 +61,28 @@ mixin _$CreateFormStore on _CreateFormStoreBase, Store {
   }
 
   @override
+  void addFieldInSection({required String fieldType, required int index}) {
+    final _$actionInfo = _$_CreateFormStoreBaseActionController.startAction(
+        name: '_CreateFormStoreBase.addFieldInSection');
+    try {
+      return super.addFieldInSection(fieldType: fieldType, index: index);
+    } finally {
+      _$_CreateFormStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void deleteFieldInSection({required String sectionId, required int index}) {
+    final _$actionInfo = _$_CreateFormStoreBaseActionController.startAction(
+        name: '_CreateFormStoreBase.deleteFieldInSection');
+    try {
+      return super.deleteFieldInSection(sectionId: sectionId, index: index);
+    } finally {
+      _$_CreateFormStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void deleteSection({required int index}) {
     final _$actionInfo = _$_CreateFormStoreBaseActionController.startAction(
         name: '_CreateFormStoreBase.deleteSection');
@@ -48,7 +96,7 @@ mixin _$CreateFormStore on _CreateFormStoreBase, Store {
   @override
   String toString() {
     return '''
-
+isLoading: ${isLoading}
     ''';
   }
 }

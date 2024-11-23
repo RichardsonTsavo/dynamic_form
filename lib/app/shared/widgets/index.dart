@@ -1,3 +1,4 @@
+export 'add_options_widget.dart/add_options_widget.dart';
 export 'animated_list/animated_list_widget.dart';
 export 'custom_checkbox/custom_checkbox.dart';
 export 'custom_checkbox_group/custom_checkbox_group.dart';

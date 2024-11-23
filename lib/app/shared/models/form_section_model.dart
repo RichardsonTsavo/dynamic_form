@@ -32,7 +32,7 @@ class FormSectionModel {
           map['description'] != null ? map['description'] as String : null,
       fields: map['fields'] != null
           ? List<FormFieldModel>.from(
-              (map['fields'] as List<int>).map<FormFieldModel?>(
+              (map['fields'] as List<dynamic>).map<FormFieldModel?>(
                 (x) => FormFieldModel.fromMap(x as Map<String, dynamic>),
               ),
             )

@@ -9,6 +9,7 @@ class CustomDropdown extends StatelessWidget {
   final List<DropdownMenuItem> items;
   final Color? borderColor;
   final Color? errorBorderColor;
+  final Color? selectedColor;
   final dynamic initialValue;
   final String? Function(dynamic)? validator;
   const CustomDropdown({
@@ -19,6 +20,7 @@ class CustomDropdown extends StatelessWidget {
     this.titleTextStyle,
     this.style,
     this.borderColor,
+    this.selectedColor,
     this.errorBorderColor,
     this.initialValue,
     this.validator,
@@ -30,14 +32,6 @@ class CustomDropdown extends StatelessWidget {
       name: name,
       initialValue: initialValue,
       validator: validator,
-      hint: Text(
-        title,
-        style: titleTextStyle ??
-            TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 15,
-            ),
-      ),
       iconEnabledColor: Theme.of(context).primaryColor,
       items: items,
       style: style ??
@@ -48,14 +42,22 @@ class CustomDropdown extends StatelessWidget {
       selectedItemBuilder: (context) {
         return items.map((DropdownMenuItem item) {
           return Text(
-            item.value,
+            item.value.toString(),
             style: TextStyle(
-              color: Theme.of(context).primaryColor,
+              color: selectedColor ?? Theme.of(context).primaryColor,
             ),
           );
         }).toList();
       },
       decoration: InputDecoration(
+        label: Text(
+          '$title${validator != null ? ' *' : ''}',
+          style: titleTextStyle ??
+              TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 15,
+              ),
+        ),
         border: OutlineInputBorder(
           borderSide: BorderSide(
             color: borderColor ?? Theme.of(context).primaryColor,

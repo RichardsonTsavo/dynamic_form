@@ -29,7 +29,7 @@ class CustomSwitch extends StatelessWidget {
       initialValue: initialValue ?? false,
       validator: validator,
       title: Text(
-        title,
+        '$title${validator != null ? '*' : ''}',
         style: titleTextStyle ??
             TextStyle(
               color: Theme.of(context).primaryColor,

@@ -282,6 +282,7 @@ class FormWidgetBuilder {
                 name: element.id!,
                 title: element.label!,
                 initialValue: element.value,
+                label: element.label,
                 validator: element.isRequired == true
                     ? (value) {
                         if (value == false) {
@@ -348,6 +349,7 @@ class FormWidgetBuilder {
             buildField(
               field: element,
               widget: CustomCheckboxGroup(
+                label: element.label,
                 name: element.id!,
                 initialValue: element.value,
                 options: List.generate(
@@ -379,6 +381,7 @@ class FormWidgetBuilder {
             buildField(
               field: element,
               widget: CustomSlider(
+                label: element.label,
                 name: element.id!,
                 initialValue: element.value,
                 min: element.min!,
@@ -401,6 +404,7 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomDateTimePicker(
                 name: element.id!,
+                label: element.label,
                 initialValue: element.value,
                 validator: element.isRequired == true
                     ? (value) {
