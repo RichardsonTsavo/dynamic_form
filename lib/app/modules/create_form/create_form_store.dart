@@ -77,29 +77,28 @@ abstract class _CreateFormStoreBase with Store {
     isLoading = true;
 
     for (var i = 0; i < sections.length; i++) {
+      final sectionId = sections[i].id;
+      final sectionPrefix = '$sectionId/$i';
+
       sections[i] = sections[i].copyWith(
-        title: form['${sections[i].id}/${i}title'],
-        description: form['${sections[i].id}/${i}description'],
-        fields: [
-          for (int x = 0; x < sections[i].fields!.length; x++)
-            sections[i].fields![x].copyWith(
-                  label: form['${sections[i].id}/$x/label'],
-                  description: form['${sections[i].id}/$x/description'],
-                  isRequired: form['${sections[i].id}/$x/isRequired'],
-                  title: form['${sections[i].id}/$x/title'],
-                  fieldOptions: form['${sections[i].id}/$x/options'],
-                  min: form['${sections[i].id}/$x/min'] != null
-                      ? double.parse(
-                          form['${sections[i].id}/$x/min'].toString())
-                      : null,
-                  max: form['${sections[i].id}/$x/max'] != null
-                      ? double.parse(
-                          form['${sections[i].id}/$x/max'].toString())
-                      : null,
-                  fileTypes: form['${sections[i].id}/$x/fileTypes'],
-                ),
-        ],
+        title: form['$sectionPrefix/title'],
+        description: form['$sectionPrefix/description'],
       );
+
+      for (int x = 0; x < (sections[i].fields?.length ?? 0); x++) {
+        final fieldPrefix = '$sectionId/$x';
+
+        sections[i].fields![x] = sections[i].fields![x].copyWith(
+              label: form['$fieldPrefix/label'],
+              description: form['$fieldPrefix/description'],
+              isRequired: form['$fieldPrefix/isRequired'],
+              title: form['$fieldPrefix/title'],
+              fieldOptions: form['$fieldPrefix/options'],
+              min: _parseDouble(form['$fieldPrefix/min']),
+              max: _parseDouble(form['$fieldPrefix/max']),
+              fileTypes: form['$fieldPrefix/fileTypes'],
+            );
+      }
     }
 
     FormModel formModel = FormModel(
@@ -133,5 +132,9 @@ abstract class _CreateFormStoreBase with Store {
         );
       },
     );
+  }
+
+  double? _parseDouble(dynamic value) {
+    return value != null ? double.tryParse(value.toString()) : null;
   }
 }
