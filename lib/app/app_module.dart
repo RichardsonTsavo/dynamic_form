@@ -1,6 +1,7 @@
 import 'package:dynamic_form/app/modules/create_form/create_form_module.dart';
 import 'package:dynamic_form/app/modules/users/users_module.dart';
 import 'package:dynamic_form/app/modules/view_form/view_form_module.dart';
+import 'package:dynamic_form/app/modules/view_responses/view_responses_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'modules/home/home_module.dart';
@@ -20,5 +21,7 @@ class AppModule extends Module {
         module: CreateFormModule(), transition: TransitionType.fadeIn);
     r.module('/view-form',
         module: ViewFormModule(), transition: TransitionType.fadeIn);
+    r.module('/view-response',
+        module: ViewResponsesModule(), transition: TransitionType.fadeIn);
   }
 }

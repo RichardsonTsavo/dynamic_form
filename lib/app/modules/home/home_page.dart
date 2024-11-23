@@ -82,6 +82,10 @@ class _HomePageState extends State<HomePage> {
                         InkWell(
                           onTap: () {
                             if (store.persistentData.isAdmin) {
+                              Modular.to.pushNamed(
+                                '/view-response/',
+                                arguments: snapshot.data![index],
+                              );
                             } else {
                               Modular.to.navigate(
                                 '/view-form/',

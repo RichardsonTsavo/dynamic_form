@@ -12,18 +12,18 @@ class DynamicFormApi {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? items = prefs.getStringList('forms');
     if (items != null) {
-      List<FormModel> listForms = [];
+      List<FormModel> listResponses = [];
       for (var element in items) {
         Map<String, dynamic> valueMap = json.decode(element);
         FormModel form = FormModel.fromMap(valueMap);
-        listForms.add(form);
+        listResponses.add(form);
       }
       if (persistentData.isAdmin) {
-        listForms.removeWhere(
+        listResponses.removeWhere(
           (element) => element.createdBy != persistentData.userID,
         );
       }
-      return listForms;
+      return listResponses;
     } else {
       return [];
     }
@@ -65,5 +65,31 @@ class DynamicFormApi {
           )
           .toList(),
     );
+  }
+
+  Future saveFormResponses(FormResponseModel response) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> items = prefs.getStringList('responses') ?? [];
+    items.add(response.toJson());
+    await prefs.setStringList('responses', items);
+  }
+
+  Future<List<FormResponseModel>> getAllResponses(String formID) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? items = prefs.getStringList('responses');
+    if (items != null) {
+      List<FormResponseModel> listResponses = [];
+      for (var element in items) {
+        Map<String, dynamic> valueMap = json.decode(element);
+        FormResponseModel form = FormResponseModel.fromMap(valueMap);
+        listResponses.add(form);
+      }
+      listResponses.removeWhere(
+        (element) => element.formID != formID,
+      );
+      return listResponses;
+    } else {
+      return [];
+    }
   }
 }

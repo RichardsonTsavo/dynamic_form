@@ -90,7 +90,14 @@ class ViewFormPageState extends State<ViewFormPage> {
                                   curve: Curves.easeIn,
                                 );
                               } else {
-                                store.sendForm(formKey.currentState!.value);
+                                store.sendForm(
+                                  response: FormResponseModel(
+                                    formID: widget.form.id,
+                                    userID: store.persistentData.userID,
+                                    response: formKey.currentState!.value,
+                                  ),
+                                  context: context,
+                                );
                               }
                             }
                           }, child: Observer(builder: (_) {
