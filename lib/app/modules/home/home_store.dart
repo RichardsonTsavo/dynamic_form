@@ -13,4 +13,8 @@ abstract class HomeStoreBase with Store {
   Future<List<FormModel>> getAllForms() async {
     return api.getAllForms();
   }
+
+  Future<void> deleteForms(int index) async {
+    return await api.deleteForm(index: index);
+  }
 }

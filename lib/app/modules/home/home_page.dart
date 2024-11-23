@@ -59,25 +59,68 @@ class _HomePageState extends State<HomePage> {
                   snapshot.data!.length,
                   (index) => AnimatedListModel(
                     searchName: snapshot.data![index].formName!,
-                    widget: Card(
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.list_alt_rounded,
-                            size: constraints.maxWidth * 0.25,
-                          ),
-                          Text(
-                            snapshot.data![index].formName!,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: constraints.maxWidth * 0.06,
+                    widget: Stack(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Modular.to.navigate(
+                              '/view-form/',
+                              arguments: snapshot.data![index],
+                            );
+                          },
+                          child: Card(
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.list_alt_rounded,
+                                  size: constraints.maxWidth * 0.25,
+                                ),
+                                Text(
+                                  snapshot.data![index].formName!,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: constraints.maxWidth * 0.06,
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 10,
+                          left: 10,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            child: IconButton(
+                              onPressed: () async {
+                                await store.deleteForms(index);
+                                setState(() {});
+                              },
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.black,
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),

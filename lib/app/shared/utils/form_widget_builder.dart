@@ -177,9 +177,7 @@ class FormWidgetBuilder {
                           return 'O número de telefone é obrigatório';
                         }
 
-                        final regex = RegExp(r'^\(\d{2}\) \d{5}-\d{4}\$');
-
-                        if (!regex.hasMatch(value)) {
+                        if (value.length != 15) {
                           return 'O número de telefone deve estar no formato (99) 99999-9999';
                         }
 
@@ -280,7 +278,7 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomCheckbox(
                 name: element.id!,
-                title: element.label!,
+                title: element.label ?? "CheckBox",
                 initialValue: element.value,
                 label: element.label,
                 validator: element.isRequired == true
@@ -330,7 +328,7 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomSwitch(
                 name: element.id!,
-                title: element.label!,
+                title: element.label ?? "Switch",
                 initialValue: element.value,
                 validator: element.isRequired == true
                     ? (value) {
@@ -383,7 +381,7 @@ class FormWidgetBuilder {
               widget: CustomSlider(
                 label: element.label,
                 name: element.id!,
-                initialValue: element.value,
+                initialValue: element.value ?? element.min!,
                 min: element.min!,
                 max: element.max!,
                 validator: element.isRequired == true
@@ -425,7 +423,7 @@ class FormWidgetBuilder {
               widget: CustomFilePicker(
                 name: element.id!,
                 initialValue: element.value,
-                allowMultiple: element.max! > 1,
+                allowMultiple: (element.max ?? 1) > 1,
                 allowedExtensions: element.fileTypes,
                 validator: element.isRequired == true
                     ? (value) {

@@ -81,8 +81,8 @@ abstract class _CreateFormStoreBase with Store {
       final sectionPrefix = '$sectionId/$i';
 
       sections[i] = sections[i].copyWith(
-        title: form['$sectionPrefix/title'],
-        description: form['$sectionPrefix/description'],
+        title: form['${sections[i].id}title'],
+        description: form['${sections[i].id}description'],
       );
 
       for (int x = 0; x < (sections[i].fields?.length ?? 0); x++) {

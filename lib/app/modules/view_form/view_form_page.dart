@@ -32,13 +32,13 @@ class ViewFormPageState extends State<ViewFormPage> {
         context: context,
       );
       return Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           title: Text(widget.form.formName!),
           leading: IconButton(
             onPressed: () {
               if (pageController.page == 0) {
-                Navigator.of(context).pop();
+                Modular.to.navigate('/');
               } else {
                 pageController.previousPage(
                   duration: const Duration(milliseconds: 300),
@@ -71,38 +71,42 @@ class ViewFormPageState extends State<ViewFormPage> {
                 return SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        ...store.formWidgetBuilder!.buildForm(
-                          formKey: formKey,
-                          formSection: widget.form.sections![index],
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        ElevatedButton(onPressed: () {
-                          if (formKey.currentState?.saveAndValidate() == true) {
-                            if ((index + 1) != widget.form.sections!.length) {
-                              pageController.nextPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn,
-                              );
-                            } else {
-                              store.sendForm(formKey.currentState!.value);
+                    child: FormBuilder(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          ...store.formWidgetBuilder!.buildForm(
+                            formKey: formKey,
+                            formSection: widget.form.sections![index],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          ElevatedButton(onPressed: () {
+                            if (formKey.currentState?.saveAndValidate() ==
+                                true) {
+                              if ((index + 1) != widget.form.sections!.length) {
+                                pageController.nextPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeIn,
+                                );
+                              } else {
+                                store.sendForm(formKey.currentState!.value);
+                              }
                             }
-                          }
-                        }, child: Observer(builder: (_) {
-                          if (store.isLoading) {
-                            return const LoadingWidget(
-                              loadingColor: Colors.black,
-                            );
-                          }
-                          return Text(
-                              (index + 1) == widget.form.sections!.length
-                                  ? "Enviar"
-                                  : "Avançar");
-                        }))
-                      ],
+                          }, child: Observer(builder: (_) {
+                            if (store.isLoading) {
+                              return const LoadingWidget(
+                                loadingColor: Colors.black,
+                              );
+                            }
+                            return Text(
+                                (index + 1) == widget.form.sections!.length
+                                    ? "Enviar"
+                                    : "Avançar");
+                          }))
+                        ],
+                      ),
                     ),
                   ),
                 );
