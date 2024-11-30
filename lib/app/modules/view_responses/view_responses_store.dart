@@ -5,6 +5,7 @@ import '../../shared/models/dynamic_form/index.dart';
 
 part 'view_responses_store.g.dart';
 
+// ignore: library_private_types_in_public_api
 class ViewResponsesStore = _ViewResponsesStoreBase with _$ViewResponsesStore;
 
 abstract class _ViewResponsesStoreBase with Store {
