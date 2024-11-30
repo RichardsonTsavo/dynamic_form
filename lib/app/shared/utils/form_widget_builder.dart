@@ -151,10 +151,9 @@ class FormWidgetBuilder {
                         if (value == null || value.isEmpty) {
                           return 'O CEP é obrigatório';
                         }
-                        final regex = RegExp(r'^\d{5}-\d{3}\$');
 
-                        if (!regex.hasMatch(value)) {
-                          return 'O CEP deve estar no formato 99999-999';
+                        if (value.length < 10) {
+                          return 'O CEP deve estar no formato 99.999-999';
                         }
 
                         return null;
@@ -239,8 +238,8 @@ class FormWidgetBuilder {
                         if (value == null || value.isEmpty) {
                           return 'A placa do carro é obrigatória';
                         }
-                        final regex = RegExp(r'^[A-Z]{3}-\d{4}\$');
-                        if (!regex.hasMatch(value)) {
+
+                        if (value.length < 8) {
                           return 'A placa do carro deve estar no formato AAA-1234';
                         }
 
@@ -270,8 +269,8 @@ class FormWidgetBuilder {
                         if (value == null || value.isEmpty) {
                           return 'O número do cartão é obrigatório';
                         }
-                        final regex = RegExp(r'^(\d{4} ){4}\d{4}\$');
-                        if (!regex.hasMatch(value)) {
+
+                        if (value.length < 19) {
                           return 'O número do cartão deve estar no formato 0000 1111 2222 3333 4444';
                         }
 
