@@ -294,7 +294,7 @@ class FormWidgetBuilder {
                 label: element.label,
                 validator: element.isRequired == true
                     ? (value) {
-                        if (value == false) {
+                        if (value != true) {
                           return "Campo Obrigatório";
                         }
                         return null;
@@ -345,7 +345,7 @@ class FormWidgetBuilder {
                     initialResponses?.response?[element.id!] ?? element.value,
                 validator: element.isRequired == true
                     ? (value) {
-                        if (value == false) {
+                        if (value != true) {
                           return "Campo Obrigatório";
                         }
                         return null;
@@ -397,13 +397,19 @@ class FormWidgetBuilder {
                 name: element.id!,
                 initialValue: initialResponses?.response?[element.id!] ??
                     element.value ??
-                    element.min!,
-                min: element.min!,
+                    0,
+                min: 0,
                 max: element.max!,
                 validator: element.isRequired == true
                     ? (value) {
                         if (value == null) {
                           return 'Campo Obrigatório';
+                        }
+                        if (value < element.min!) {
+                          return 'Selecione no mínimo ${element.min!.toInt()}';
+                        }
+                        if (value > element.max!) {
+                          return 'Selecione no máximo ${element.max!.toInt()}';
                         }
                         return null;
                       }

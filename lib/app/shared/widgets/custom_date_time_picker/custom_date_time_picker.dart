@@ -27,16 +27,20 @@ class CustomDateTimePicker extends StatelessWidget {
             color: Theme.of(context).primaryColor,
           ),
       initialEntryMode: DatePickerEntryMode.calendar,
-      initialDate: DateTime.now(),
-      initialTime: TimeOfDay.now(),
-      initialValue: initialValue ?? DateTime.now(),
+      initialValue: initialValue,
       validator: validator,
       format: DateFormat('dd/MM/yyyy \'às\' hh:mm'),
       inputType: InputType.both,
       decoration: InputDecoration(
         label: label != null
             ? Text("$label ${validator != null ? ' *' : ''}")
-            : null,
+            : Text(
+                "Informe uma data ${validator != null ? ' *' : ''}",
+                style: style ??
+                    TextStyle(
+                      color: Theme.of(context).primaryColor.withAlpha(100),
+                    ),
+              ),
         prefixIcon: Icon(
           Icons.date_range,
           color: Theme.of(context).primaryColor,

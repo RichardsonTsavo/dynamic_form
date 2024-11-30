@@ -59,8 +59,11 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
               width: MediaQuery.of(context).size.width,
               height: 250,
               decoration: BoxDecoration(
-                border:
-                    Border.all(color: Theme.of(context).primaryColor, width: 2),
+                border: Border.all(
+                    color: field.errorText != null
+                        ? Colors.red
+                        : Theme.of(context).primaryColor,
+                    width: 2),
               ),
               child: field.value == null || field.value!.isEmpty
                   ? Center(
@@ -139,6 +142,20 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
                       },
                     ),
             ),
+            if (field.errorText != null)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    field.errorText!,
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              )
           ],
         );
       },

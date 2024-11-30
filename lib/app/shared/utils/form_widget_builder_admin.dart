@@ -213,7 +213,7 @@ class FormWidgetBuilderAdmin {
                   ),
                   CustomDropdown(
                     name: "${formSection.id!}/$x/min",
-                    initialValue: element.value ?? 1,
+                    initialValue: element.value ?? element.min ?? 1,
                     items: List.generate(
                       1000,
                       (index) => DropdownMenuItem(
@@ -242,7 +242,7 @@ class FormWidgetBuilderAdmin {
                   ),
                   CustomDropdown(
                     name: "${formSection.id!}/$x/max",
-                    initialValue: element.value,
+                    initialValue: element.value ?? element.max,
                     validator: (value) {
                       if (value == null || (value.toString()).isEmpty) {
                         return "Campo obrigatório";
@@ -282,7 +282,7 @@ class FormWidgetBuilderAdmin {
                   ),
                   CustomDropdown(
                     name: "${formSection.id!}/$x/min",
-                    initialValue: element.value,
+                    initialValue: element.value ?? element.min ?? 1,
                     items: List.generate(
                       1000,
                       (index) => DropdownMenuItem(
@@ -311,7 +311,7 @@ class FormWidgetBuilderAdmin {
                   ),
                   CustomDropdown(
                     name: "${formSection.id!}/$x/max",
-                    initialValue: element.value,
+                    initialValue: element.value ?? element.max,
                     selectedColor: Theme.of(context).scaffoldBackgroundColor,
                     validator: (value) {
                       if (value == null || (value.toString()).isEmpty) {
@@ -360,8 +360,66 @@ class FormWidgetBuilderAdmin {
                     initialvalue: element.fileTypes,
                     fieldId: '${formSection.id!}/$x/fileTypes',
                     firstRequired: false,
-                    titleButton: "Adicionar um formato especifico",
+                    titleButton: "Adicionar um formatos especificos",
                   ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  CustomDropdown(
+                    name: "${formSection.id!}/$x/min",
+                    initialValue: element.value ?? element.min ?? 1,
+                    items: List.generate(
+                      1000,
+                      (index) => DropdownMenuItem(
+                        value: index,
+                        child: Text("$index"),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || (value.toString()).isEmpty) {
+                        return "Campo obrigatório";
+                      }
+                      return null;
+                    },
+                    title: "Minimo",
+                    titleTextStyle: TextStyle(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                    borderColor: Theme.of(context).scaffoldBackgroundColor,
+                    selectedColor: Theme.of(context).scaffoldBackgroundColor,
+                    style: TextStyle(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  CustomDropdown(
+                    name: "${formSection.id!}/$x/max",
+                    initialValue: element.value ?? element.max,
+                    validator: (value) {
+                      if (value == null || (value.toString()).isEmpty) {
+                        return "Campo obrigatório";
+                      }
+                      return null;
+                    },
+                    items: List.generate(
+                      1000,
+                      (index) => DropdownMenuItem(
+                        value: index,
+                        child: Text("$index"),
+                      ),
+                    ),
+                    title: "Máximo",
+                    selectedColor: Theme.of(context).scaffoldBackgroundColor,
+                    titleTextStyle: TextStyle(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                    borderColor: Theme.of(context).scaffoldBackgroundColor,
+                    style: TextStyle(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                  )
                 ]),
           );
           break;
