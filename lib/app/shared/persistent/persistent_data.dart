@@ -8,8 +8,8 @@ class PersistentData {
     return _user?.role == "Administrador";
   }
 
-  String get userID {
-    return _user!.id!;
+  UserModel get user {
+    return _user!;
   }
 
   void login(UserModel userModel) {

@@ -13,6 +13,7 @@ class FormWidgetBuilder {
   List<Widget> buildForm({
     required GlobalKey<FormBuilderState> formKey,
     required FormSectionModel formSection,
+    FormResponseModel? initialResponses,
   }) {
     List<Widget> widgets = [
       Text(
@@ -40,7 +41,8 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomTextFormField(
                 name: element.id!,
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 labelText: element.label ?? "Digite um Texto",
                 validator: element.isRequired == true
                     ? (value) {
@@ -60,7 +62,8 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomTextFormField(
                 name: element.id!,
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 labelText: element.label ?? "Digite um Texto",
                 maxLines: 5,
                 validator: element.isRequired == true
@@ -81,7 +84,8 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomTextFormField(
                 name: element.id!,
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   CpfInputFormatter(),
@@ -107,7 +111,8 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomTextFormField(
                 name: element.id!,
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   CnpjInputFormatter(),
@@ -133,7 +138,8 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomTextFormField(
                 name: element.id!,
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   CepInputFormatter(),
@@ -164,7 +170,8 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomTextFormField(
                 name: element.id!,
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   TelefoneInputFormatter(),
@@ -194,10 +201,11 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomTextFormField(
                 name: element.id!,
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
-                  CentavosInputFormatter(),
+                  CentavosInputFormatter(moeda: true),
                 ],
                 keyboardType: TextInputType.number,
                 labelText: "Digite um valor",
@@ -220,7 +228,8 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomTextFormField(
                 name: element.id!,
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 inputFormatters: [
                   PlacaVeiculoInputFormatter(),
                 ],
@@ -248,7 +257,8 @@ class FormWidgetBuilder {
               field: element,
               widget: CustomTextFormField(
                 name: element.id!,
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   CartaoBancarioInputFormatter(),
@@ -279,7 +289,8 @@ class FormWidgetBuilder {
               widget: CustomCheckbox(
                 name: element.id!,
                 title: element.label ?? "CheckBox",
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 label: element.label,
                 validator: element.isRequired == true
                     ? (value) {
@@ -309,7 +320,8 @@ class FormWidgetBuilder {
                     ),
                   ),
                 ),
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 validator: element.isRequired == true
                     ? (value) {
                         if (value == null) {
@@ -329,7 +341,8 @@ class FormWidgetBuilder {
               widget: CustomSwitch(
                 name: element.id!,
                 title: element.label ?? "Switch",
-                initialValue: element.value,
+                initialValue:
+                    initialResponses?.response?[element.id!] ?? element.value,
                 validator: element.isRequired == true
                     ? (value) {
                         if (value == false) {
@@ -349,7 +362,8 @@ class FormWidgetBuilder {
               widget: CustomCheckboxGroup(
                 label: element.label,
                 name: element.id!,
-                initialValue: element.value,
+                initialValue: getInitialCheckBoxGroupValue(
+                    initialResponses?.response?[element.id!] ?? element.value),
                 options: List.generate(
                   element.fieldOptions!.length,
                   (index) => FormBuilderFieldOption(
@@ -381,7 +395,9 @@ class FormWidgetBuilder {
               widget: CustomSlider(
                 label: element.label,
                 name: element.id!,
-                initialValue: element.value ?? element.min!,
+                initialValue: initialResponses?.response?[element.id!] ??
+                    element.value ??
+                    element.min!,
                 min: element.min!,
                 max: element.max!,
                 validator: element.isRequired == true
@@ -403,7 +419,8 @@ class FormWidgetBuilder {
               widget: CustomDateTimePicker(
                 name: element.id!,
                 label: element.label,
-                initialValue: element.value,
+                initialValue: getInitialDateValue(
+                    initialResponses?.response?[element.id!] ?? element.value),
                 validator: element.isRequired == true
                     ? (value) {
                         if (value == null) {
@@ -421,8 +438,10 @@ class FormWidgetBuilder {
             buildField(
               field: element,
               widget: CustomFilePicker(
+                canRemoveImage: true,
                 name: element.id!,
-                initialValue: element.value,
+                initialValue: getInitialFileValue(
+                    initialResponses?.response?[element.id!] ?? element.value),
                 allowMultiple: (element.max ?? 1) > 1,
                 allowedExtensions: element.fileTypes,
                 validator: element.isRequired == true
@@ -447,6 +466,37 @@ class FormWidgetBuilder {
       }
     }
     return widgets;
+  }
+
+  List<String>? getInitialCheckBoxGroupValue(dynamic info) {
+    if (info.runtimeType == List<dynamic>) {
+      return List<String>.from(info);
+    } else {
+      return info;
+    }
+  }
+
+  DateTime? getInitialDateValue(dynamic info) {
+    if (info.runtimeType != DateTime) {
+      if (info == null) {
+        return null;
+      }
+      return DateTime.fromMillisecondsSinceEpoch(info);
+    } else {
+      return info;
+    }
+  }
+
+  List<FileDataModel>? getInitialFileValue(dynamic info) {
+    if (info.runtimeType == List<dynamic>) {
+      List<FileDataModel> data = [];
+      for (var element in (info as List<dynamic>)) {
+        data.add(FileDataModel.fromMap(element));
+      }
+      return data;
+    } else {
+      return info;
+    }
   }
 
   Widget buildField({

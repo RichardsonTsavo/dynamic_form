@@ -16,6 +16,7 @@ abstract class _ViewFormStoreBase with Store {
   FormWidgetBuilder? formWidgetBuilder;
   PersistentData persistentData = Modular.get();
   DynamicFormApi dynamicFormApi = DynamicFormApi();
+  Map<String, dynamic> responseForm = {};
 
   @observable
   bool isLoading = false;
@@ -40,6 +41,41 @@ abstract class _ViewFormStoreBase with Store {
             actionsAlignment: MainAxisAlignment.spaceEvenly,
             title: const Text(
               "Resposta enviada com sucesso!",
+              textAlign: TextAlign.center,
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Modular.to.navigate('/home/');
+                },
+                child: const Text("Fechar"),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> sendEditForm({
+    required FormResponseModel form,
+    required BuildContext context,
+  }) async {
+    isLoading = true;
+    form = form.copyWith(
+      response: responseForm,
+    );
+    await dynamicFormApi.updateFormResponses(form);
+    isLoading = false;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        Utils.showPopupDialog(
+          context: context,
+          child: AlertDialog(
+            actionsAlignment: MainAxisAlignment.spaceEvenly,
+            title: const Text(
+              "Resposta editada com sucesso!",
               textAlign: TextAlign.center,
             ),
             actions: [

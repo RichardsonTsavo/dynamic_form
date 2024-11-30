@@ -1,15 +1,19 @@
 import 'package:mobx/mobx.dart';
 
+import '../../shared/api/dynamic_form_api.dart';
+import '../../shared/models/dynamic_form/index.dart';
+
 part 'view_responses_store.g.dart';
 
 class ViewResponsesStore = _ViewResponsesStoreBase with _$ViewResponsesStore;
 
 abstract class _ViewResponsesStoreBase with Store {
-  @observable
-  int value = 0;
+  DynamicFormApi api = DynamicFormApi();
+  Future<List<FormResponseModel>> getAllResponses(String id) async {
+    return api.getAllResponsesFromID(id);
+  }
 
-  @action
-  void increment() {
-    value++;
+  Future deleteResponse(String responseID) async {
+    await api.deleteResponse(responseID: responseID);
   }
 }

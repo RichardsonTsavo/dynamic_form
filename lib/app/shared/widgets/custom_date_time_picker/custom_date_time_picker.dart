@@ -31,7 +31,7 @@ class CustomDateTimePicker extends StatelessWidget {
       initialTime: TimeOfDay.now(),
       initialValue: initialValue ?? DateTime.now(),
       validator: validator,
-      format: DateFormat('dd-MM-yyyy \'às\' mm:ss'),
+      format: DateFormat('dd/MM/yyyy \'às\' hh:mm'),
       inputType: InputType.both,
       decoration: InputDecoration(
         label: label != null

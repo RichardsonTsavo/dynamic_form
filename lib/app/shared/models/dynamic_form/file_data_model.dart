@@ -25,7 +25,9 @@ class FileDataModel {
 
   factory FileDataModel.fromMap(Map<String, dynamic> map) {
     return FileDataModel(
-      bytes: map['bytes'],
+      bytes: map['bytes'].runtimeType == List
+          ? Uint8List.fromList(List<int>.from(map['bytes']))
+          : map['bytes'],
       name: map['name'] != null ? map['name'] as String : null,
       size: map['size'] != null ? map['size'] as int : null,
       extension: map['extension'] != null ? map['extension'] as String : null,

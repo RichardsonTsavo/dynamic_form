@@ -13,7 +13,8 @@ class ViewFormModule extends Module {
     r.child(
       '/',
       child: (context) => ViewFormPage(
-        form: r.args.data,
+        form: r.args.data['form'],
+        response: r.args.data['response'],
       ),
     );
   }

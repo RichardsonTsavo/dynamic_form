@@ -46,6 +46,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text('Logout'),
                 ),
               ],
+              icon: const Icon(Icons.menu),
             ),
           ],
         ),
@@ -80,16 +81,126 @@ class _HomePageState extends State<HomePage> {
                     widget: Stack(
                       children: [
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
                             if (store.persistentData.isAdmin) {
                               Modular.to.pushNamed(
                                 '/view-response/',
                                 arguments: snapshot.data![index],
                               );
                             } else {
-                              Modular.to.navigate(
-                                '/view-form/',
-                                arguments: snapshot.data![index],
+                              List<FormResponseModel> responses = await store
+                                  .getAllResponses(snapshot.data![index].id!);
+                              List<FormResponseModel> myResponses = [];
+                              for (var element in responses) {
+                                if (element.user!.id ==
+                                    store.persistentData.user.id) {
+                                  myResponses.add(element);
+                                }
+                              }
+                              WidgetsBinding.instance.addPostFrameCallback(
+                                (timeStamp) {
+                                  Utils.showPopupDialog(
+                                    context: context,
+                                    child: AlertDialog(
+                                      scrollable: true,
+                                      actionsAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      title: Text(
+                                        snapshot.data![index].formName!,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      content: Column(
+                                        children: [
+                                          if (myResponses.isNotEmpty)
+                                            const Text(
+                                              "Minhas Resposas",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          for (int i = 0;
+                                              i < myResponses.length;
+                                              i++)
+                                            Card(
+                                              color: Theme.of(context)
+                                                  .scaffoldBackgroundColor,
+                                              child: ListTile(
+                                                onTap: () {
+                                                  Navigator.of(context).pop();
+                                                  if (snapshot.data![index]
+                                                          .isEditable ==
+                                                      true) {
+                                                    Modular.to.navigate(
+                                                      '/view-form/',
+                                                      arguments: {
+                                                        'form': snapshot
+                                                            .data![index],
+                                                        'response':
+                                                            myResponses[i],
+                                                      },
+                                                    );
+                                                  } else {
+                                                    Utils.showMaterialBanner(
+                                                        context: context,
+                                                        mensage:
+                                                            "Formulário não permite edição de resposta.");
+                                                  }
+                                                },
+                                                leading: const Icon(
+                                                  Icons.person,
+                                                  color: Colors.white,
+                                                ),
+                                                title: Text(
+                                                  "Resposta ${i + 1}",
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                        ],
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text("Sair")),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            if (myResponses.length <
+                                                snapshot.data![index]
+                                                    .maxResponseCount!) {
+                                              Modular.to.navigate(
+                                                '/view-form/',
+                                                arguments: {
+                                                  'form': snapshot.data![index],
+                                                },
+                                              );
+                                            } else {
+                                              Utils.showMaterialBanner(
+                                                context: context,
+                                                mensage:
+                                                    'O usuário: ${store.persistentData.user.name} atingiu o limite de respostas do formulário.',
+                                              );
+                                            }
+                                          },
+                                          child: const Text(
+                                            "Responder",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
                               );
                             }
                           },

@@ -13,6 +13,10 @@ abstract class HomeStoreBase with Store {
   DynamicFormApi api = DynamicFormApi();
   PersistentData persistentData = Modular.get();
 
+  Future<List<FormResponseModel>> getAllResponses(String id) async {
+    return api.getAllResponsesFromID(id);
+  }
+
   Future<List<FormModel>> getAllForms() async {
     return api.getAllForms();
   }

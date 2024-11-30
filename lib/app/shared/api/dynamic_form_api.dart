@@ -20,7 +20,7 @@ class DynamicFormApi {
       }
       if (persistentData.isAdmin) {
         listResponses.removeWhere(
-          (element) => element.createdBy != persistentData.userID,
+          (element) => element.createdBy != persistentData.user.id,
         );
       }
       return listResponses;
@@ -74,7 +74,26 @@ class DynamicFormApi {
     await prefs.setStringList('responses', items);
   }
 
-  Future<List<FormResponseModel>> getAllResponses(String formID) async {
+  Future updateFormResponses(FormResponseModel model) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> items = prefs.getStringList('responses') ?? [];
+    List<FormResponseModel> responses = List.generate(
+      items.length,
+      (index) => FormResponseModel.fromJson(items[index]),
+    );
+    for (int i = 0; i < responses.length; i++) {
+      if (model.id == responses[i].id) {
+        responses[i] = model;
+      }
+    }
+    List<String> itemsEdited = List.generate(
+      responses.length,
+      (index) => responses[index].toJson(),
+    );
+    await prefs.setStringList('responses', itemsEdited);
+  }
+
+  Future<List<FormResponseModel>> getAllResponsesFromID(String formID) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? items = prefs.getStringList('responses');
     if (items != null) {
@@ -91,5 +110,18 @@ class DynamicFormApi {
     } else {
       return [];
     }
+  }
+
+  Future deleteResponse({required String responseID}) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> items = prefs.getStringList('responses') ?? [];
+    items.removeWhere(
+      (element) {
+        Map<String, dynamic> valueMap = json.decode(element);
+        FormResponseModel response = FormResponseModel.fromMap(valueMap);
+        return response.id == responseID;
+      },
+    );
+    await prefs.setStringList('responses', items);
   }
 }

@@ -105,7 +105,7 @@ abstract class _CreateFormStoreBase with Store {
     if (formModel == null) {
       FormModel model = FormModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        createdBy: persistentData.userID,
+        createdBy: persistentData.user.id,
         formName: form['title'],
         isEditable: form['isEditable'],
         maxResponseCount: int.parse(

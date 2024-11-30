@@ -11,10 +11,12 @@ import '../../shared/widgets/index.dart';
 class ViewFormPage extends StatefulWidget {
   final String title;
   final FormModel form;
+  final FormResponseModel? response;
   const ViewFormPage({
     super.key,
     this.title = 'ViewFormPage',
     required this.form,
+    this.response,
   });
   @override
   ViewFormPageState createState() => ViewFormPageState();
@@ -77,6 +79,7 @@ class ViewFormPageState extends State<ViewFormPage> {
                           ...store.formWidgetBuilder!.buildForm(
                             formKey: formKey,
                             formSection: widget.form.sections![index],
+                            initialResponses: widget.response,
                           ),
                           const SizedBox(
                             height: 15,
@@ -84,20 +87,48 @@ class ViewFormPageState extends State<ViewFormPage> {
                           ElevatedButton(onPressed: () {
                             if (formKey.currentState?.saveAndValidate() ==
                                 true) {
+                              formKey.currentState!.value.forEach(
+                                (key, data) {
+                                  if (data.runtimeType == List<FileDataModel>) {
+                                    store.responseForm[key] =
+                                        (data as List<FileDataModel>)
+                                            .map(
+                                              (e) => e.toMap(),
+                                            )
+                                            .toList();
+                                  } else if (data.runtimeType == DateTime) {
+                                    store.responseForm[key] = (data as DateTime)
+                                        .millisecondsSinceEpoch;
+                                  } else {
+                                    store.responseForm[key] = data;
+                                  }
+                                },
+                              );
+
                               if ((index + 1) != widget.form.sections!.length) {
                                 pageController.nextPage(
                                   duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeIn,
                                 );
                               } else {
-                                store.sendForm(
-                                  response: FormResponseModel(
-                                    formID: widget.form.id,
-                                    userID: store.persistentData.userID,
-                                    response: formKey.currentState!.value,
-                                  ),
-                                  context: context,
-                                );
+                                if (widget.response != null) {
+                                  store.sendEditForm(
+                                    form: widget.response!,
+                                    context: context,
+                                  );
+                                } else {
+                                  store.sendForm(
+                                    response: FormResponseModel(
+                                      id: DateTime.now()
+                                          .millisecondsSinceEpoch
+                                          .toString(),
+                                      formID: widget.form.id,
+                                      user: store.persistentData.user,
+                                      response: store.responseForm,
+                                    ),
+                                    context: context,
+                                  );
+                                }
                               }
                             }
                           }, child: Observer(builder: (_) {
